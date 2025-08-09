@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import joblib  # ganti dari cloudpickle ke joblib
+import joblib
 import os
 
 st.title("Prediksi Profit Menu Restoran")
@@ -9,7 +9,7 @@ st.title("Prediksi Profit Menu Restoran")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 pipeline_path = os.path.join(BASE_DIR, "pipeline_rfnew.pkl")
 
-# Load pipeline pakai joblib
+# Load pipeline dengan joblib
 pipeline = joblib.load(pipeline_path)
 
 # Input user
