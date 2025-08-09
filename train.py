@@ -1,3 +1,4 @@
+# train.py
 import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -5,15 +6,18 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 import joblib
 
-# Contoh data
-data =  pd.read_csv("D:\\DE NOTEBOOKS\\uas MPML\\restaurant_menu_optimization_data.csv")
+# Baca dataset
+df = pd.read_csv("data.csv")  # ganti nama file sesuai dataset kamu
 
-X = data.drop("target", axis=1)
-y = data["target"]
+# Pisahkan fitur dan target
+X = df.drop("Profit", axis=1)  # ganti "Profit" dengan nama kolom target
+y = df["Profit"]
 
+# Tentukan fitur kategori & numerik
 categorical_features = X.select_dtypes(include=['object']).columns.tolist()
 numerical_features = X.select_dtypes(include=['int64', 'float64']).columns.tolist()
 
+# Preprocessor
 preprocessor = ColumnTransformer(
     transformers=[
         ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features),
@@ -21,11 +25,15 @@ preprocessor = ColumnTransformer(
     ]
 )
 
+# Pipeline model
 pipeline = Pipeline([
     ('preprocessor', preprocessor),
     ('model', RandomForestClassifier(random_state=42))
 ])
 
+# Latih model
 pipeline.fit(X, y)
-joblib.dump(pipeline, 'pipeline_rfnew.pkl')
-print("Model disimpan!")
+
+# Simpan model
+joblib.dump(pipeline, "pipeline_rfnew.pkl")
+print("✅ Model berhasil dilatih dan disimpan ke pipeline_rfnew.pkl")
